@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/current_state.dart';
 import 'package:major2_room_rental/Constants/style.dart';
 import 'package:major2_room_rental/views/about_page.dart';
+import 'package:major2_room_rental/views/admin/add_rooms.dart';
 import 'package:major2_room_rental/views/admin/admin_page.dart';
 import 'package:major2_room_rental/views/home_new.dart';
-import 'package:major2_room_rental/views/layout_template/layout_template_final_2.dart';
+import 'package:major2_room_rental/views/profile_page.dart';
 import 'package:major2_room_rental/widgets/auth_dailog.dart';
-import 'package:major2_room_rental/widgets/navbar_item/navbar_item.dart';
+import 'package:major2_room_rental/widgets/navbar_item.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({Key key}) : super(key: key);
@@ -28,7 +29,7 @@ class _NavigationBarState extends State<NavigationBar> {
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => LayoutTemplateFinal2()));
+                  builder: (BuildContext context) => HomeNew()));
             },
             child: Text(
               "Room Rental",
@@ -48,7 +49,7 @@ class _NavigationBarState extends State<NavigationBar> {
                 onTap: () {
                   if (checkAuthSignedInkey) {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => AdminPage()));
+                        builder: (BuildContext context) => ProfilePage()));
                   } else {
                     AuthDialog(context);
                   }
@@ -64,7 +65,7 @@ class _NavigationBarState extends State<NavigationBar> {
               SizedBox(width: 60),
               NavBarItem(
                 title: 'Admin',
-                navigatorPath: AdminPage(),
+                navigatorPath: AddRooms(),
               ),
               SizedBox(width: 30),
             ],

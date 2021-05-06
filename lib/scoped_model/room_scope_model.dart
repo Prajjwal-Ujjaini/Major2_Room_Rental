@@ -26,11 +26,14 @@ class Room extends Model {
 
     try {
       final Map<String, dynamic> roomData = {
-        "title": roomModel.title,
-        "description": roomModel.description,
-        "category": roomModel.category,
-        "price": roomModel.price,
-        "discount": roomModel.discount,
+        "roomName": roomModel.roomName,
+        "mno": roomModel.mno,
+        "city": roomModel.city,
+        "pin": roomModel.pin,
+        "address": roomModel.address,
+        "imag": roomModel.imagePath,
+        "rent": roomModel.rent,
+        "dist": roomModel.distanceFromMarket,
       };
 
       final http.Response response = await http.post(
@@ -41,11 +44,14 @@ class Room extends Model {
 
       RoomModel roomWithID = RoomModel(
         id: responseData["name"],
-        title: roomModel.title,
-        category: roomModel.category,
-        description: roomModel.description,
-        price: roomModel.price,
-        discount: roomModel.discount,
+        roomName: roomModel.roomName,
+        mno: roomModel.mno,
+        city: roomModel.city,
+        pin: roomModel.pin,
+        address: roomModel.address,
+        imagePath: roomModel.imagePath,
+        rent: roomModel.rent,
+        distanceFromMarket: roomModel.distanceFromMarket,
       );
 
       _rooms.add(roomWithID);
@@ -76,11 +82,14 @@ class Room extends Model {
       fetchedData.forEach((String id, dynamic roomData) {
         RoomModel roomItem = RoomModel(
           id: id,
-          title: roomData["title"],
-          description: roomData["description"],
-          category: roomData["category"],
-          price: double.parse(roomData["price"].toString()),
-          discount: double.parse(roomData["discount"].toString()),
+          roomName: roomData["roomName"],
+          mno: roomData["mno"],
+          city: roomData["city"],
+          pin: roomData["pin"],
+          address: roomData["address"],
+          imagePath: roomData["imagePath"],
+          rent: roomData["rent"],
+          distanceFromMarket: roomData["distanceFromMarket"],
         );
 
         roomItems.add(roomItem);
@@ -111,11 +120,14 @@ class Room extends Model {
 
       RoomModel updateRoomItem = RoomModel(
         id: roomId,
-        title: roomData["title"],
-        description: roomData["description"],
-        category: roomData["category"],
-        price: double.parse(roomData["price"].toString()),
-        discount: double.parse(roomData["discount"].toString()),
+        roomName: roomData["roomName"],
+        mno: roomData["mno"],
+        city: roomData["city"],
+        pin: roomData["pin"],
+        address: roomData["address"],
+        imagePath: roomData["imagePath"],
+        rent: roomData["rent"],
+        distanceFromMarket: roomData["distanceFromMarket"],
       );
 
       _rooms[roomIndex] = updateRoomItem;

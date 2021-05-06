@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/decorations.dart';
 import 'package:major2_room_rental/views/dailogs/login_dailog.dart';
-import 'package:major2_room_rental/widgets/navigation_bar/navigation_bar.dart';
+import 'package:major2_room_rental/widgets/navigation_bar.dart';
 
 class LoginPage extends StatefulWidget {
   @override

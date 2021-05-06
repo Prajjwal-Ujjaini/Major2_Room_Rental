@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:major2_room_rental/Constants/current_state.dart';
+import 'package:major2_room_rental/models/user_detail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,6 +11,8 @@ String uid;
 String name;
 String userEmail;
 String imageUrl;
+
+UserDetailModel authencatedUserInfo;
 
 // For checking if the user is already signed into the
 /// app using Google Sign In
@@ -36,7 +39,8 @@ Future getUser() async {
   }
 }
 
-Future<User> registerWithEmailPassword(String email, String password) async {
+Future<User> registerWithEmailPassword(String email, String password,
+    Function addUsersInfo, Map<String, dynamic> userInfo) async {
   await Firebase.initializeApp();
   User user;
 
@@ -46,11 +50,24 @@ Future<User> registerWithEmailPassword(String email, String password) async {
       password: password,
     );
 
+    // print(
+    //     "\n\nprint 1 in regrister with email  \n\n userCredential  === $userCredential  \n\n");
+    // print(
+    //     "\n\n\n  userCredential.user == ${userCredential.user}  \n\n userCredential.additionalUserInfo == ${userCredential.additionalUserInfo} \n\nclr");
+
+    // print(
+    //     "\n\n\n userCredential.hashCode == ${userCredential.hashCode}    \n\n  userCredential.credential == ${userCredential.credential}   \n\n  userCredential.runtimeType ==  ${userCredential.runtimeType} \n\n");
+
     user = userCredential.user;
 
     if (user != null) {
       uid = user.uid;
       userEmail = user.email;
+
+      userInfo["firebaseId"] = uid;
+
+      addUsersInfo(userInfo);
+      print("Add user fundation chala ");
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('auth', true);
@@ -68,7 +85,11 @@ Future<User> registerWithEmailPassword(String email, String password) async {
   return user;
 }
 
-Future<User> signInWithEmailPassword(String email, String password) async {
+Future<User> signInWithEmailPassword(
+  String email,
+  String password,
+  Function getUserInfo,
+) async {
   await Firebase.initializeApp();
   User user;
 
@@ -82,6 +103,8 @@ Future<User> signInWithEmailPassword(String email, String password) async {
     if (user != null) {
       uid = user.uid;
       userEmail = user.email;
+
+      authencatedUserInfo = await getUserInfo(userEmail);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('auth', true);
@@ -110,6 +133,41 @@ Future<String> signOut() async {
 
   return 'User signed out';
 }
+
+// Future<User> signInWithEmailPasswordWithApi(
+//   String email,
+//   String password,
+//   Function getUserInfo,
+// ) async {
+//   await Firebase.initializeApp();
+//   User user;
+
+//   try {
+//     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+//       email: email,
+//       password: password,
+//     );
+//     user = userCredential.user;
+
+//     if (user != null) {
+//       uid = user.uid;
+//       userEmail = user.email;
+
+//       authencatedUserInfo = await getUserInfo(userEmail);
+
+//       SharedPreferences prefs = await SharedPreferences.getInstance();
+//       await prefs.setBool('auth', true);
+//     }
+//   } on FirebaseAuthException catch (e) {
+//     if (e.code == 'user-not-found') {
+//       print('No user found for that email.');
+//     } else if (e.code == 'wrong-password') {
+//       print('Wrong password provided.');
+//     }
+//   }
+
+//   return user;
+// }
 
 // //////////////////////////////////////////////////
 

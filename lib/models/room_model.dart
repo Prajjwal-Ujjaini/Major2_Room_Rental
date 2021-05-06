@@ -1,25 +1,22 @@
 class RoomModel {
   final String id;
-  final String pin;
+  final String roomName;
+  final String mno;
   final String city;
-
-  final String title;
+  final String pin;
+  final String address;
   final String imagePath;
-  final String category;
-  final String description;
-  final double price;
-  final double discount;
-  final double ratings;
+  final String rent;
+  final String distanceFromMarket;
 
   RoomModel(
       {this.id,
-      this.pin,
+      this.roomName,
+      this.mno,
       this.city,
-      this.title,
+      this.pin,
+      this.address,
       this.imagePath,
-      this.category,
-      this.description,
-      this.price,
-      this.discount,
-      this.ratings});
+      this.rent,
+      this.distanceFromMarket});
 }

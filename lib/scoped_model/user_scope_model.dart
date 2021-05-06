@@ -43,7 +43,7 @@ class UserScopedModdel extends Model {
           await http.get(Uri.parse("$AppUrl/users.json"));
 
       final Map<String, dynamic> fetchedData = json.decode(response.body);
-      // print(fetchedData);
+      print("fetch data == $fetchedData");
 
       final List<UserDetailModel> userInfos = [];
 
@@ -96,17 +96,20 @@ class UserScopedModdel extends Model {
       _userInfos.add(userInfoWithID);
       _isLoading = false;
       notifyListeners();
+      print(" user add function ma last == true ");
       return Future.value(true);
     } catch (e) {
       _isLoading = false;
       notifyListeners();
+      print(" user add function ma last ==False ");
       return Future.value(false);
     }
   }
 
   Future<UserDetailModel> getUserInfo(String userId) async {
-    print("User info ka andar aya ha ");
+    print("User info ka andar aya ha firebase id la kr == $userId ");
     final bool response = await fetchUserInfo();
+    print("respos == $response");
     UserDetailModel foundUserInfo;
     if (response) {
       for (int i = 0; i < _userInfos.length; i++) {
@@ -215,5 +218,41 @@ class UserScopedModdel extends Model {
   void logout() {
     _authencatedUser = null;
     _authencatedUserInfo = null;
+  }
+
+  Future<bool> getSingleUserInfo(String userId) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final http.Response response =
+          await http.get(Uri.parse("$AppUrl/users.json"));
+
+      final Map<String, dynamic> fetchedData = json.decode(response.body);
+      // print(fetchedData);
+
+      final List<UserDetailModel> userInfos = [];
+
+      fetchedData.forEach((String id, dynamic userInfoData) {
+        UserDetailModel userInfo = UserDetailModel(
+          uid: id,
+          email: userInfoData['email'],
+          userType: userInfoData['userType'],
+          userId: userInfoData['localId'],
+          username: userInfoData['username'],
+        );
+
+        userInfos.add(userInfo);
+      });
+
+      _userInfos = userInfos;
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(true);
+    } catch (error) {
+      print("The erreo ==$error");
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(false);
+    }
   }
 }

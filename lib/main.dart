@@ -3,7 +3,7 @@ import 'package:major2_room_rental/Constants/current_state.dart';
 import 'package:major2_room_rental/Constants/theme_data.dart';
 import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
-import 'package:major2_room_rental/views/layout_template/layout_template_final_2.dart';
+import 'package:major2_room_rental/views/home_new.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   Future getUserInfo() async {
     await getUser();
     setState(() {});
-    print(uid);
+    print("started init \n\n uid== $uid \n\n email== $userEmail");
 
     print(" main page pr authSignedInkey  == $checkAuthSignedInkey");
   }
@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getUserInfo();
+    mainModel.fetchAll();
   }
 
   @override
@@ -40,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         title: 'Room Rentel',
         theme: lightThemeData, //ThemeData(primarySwatch: Colors.blue),
         darkTheme: darkThemeData,
-        home: LayoutTemplateFinal2(model: mainModel),
+        home: HomeNew(model: mainModel),
       ),
     );
   }

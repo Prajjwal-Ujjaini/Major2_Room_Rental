@@ -2,19 +2,30 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/image_url.dart';
+import 'package:major2_room_rental/scoped_model/main_model.dart';
 import 'package:major2_room_rental/views/auto_slider.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/featured_heading.dart';
 import 'package:major2_room_rental/widgets/featured_tiles.dart';
 import 'package:major2_room_rental/widgets/floating_quick_access_bar.dart';
-import 'package:major2_room_rental/widgets/navigation_bar/navigation_bar.dart';
+import 'package:major2_room_rental/widgets/navigation_bar.dart';
 
 class HomeNew extends StatefulWidget {
+  final MainModel model;
+
+  const HomeNew({this.model});
+
   @override
   _HomeNewState createState() => _HomeNewState();
 }
 
 class _HomeNewState extends State<HomeNew> {
+  @override
+  void initState() {
+    super.initState();
+    // widget.model.fetchAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -24,7 +35,7 @@ class _HomeNewState extends State<HomeNew> {
         child: Container(
           // decoration: backgroundMainDecoration,
           child: Column(
-            children: [
+            children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
@@ -45,7 +56,7 @@ class _HomeNewState extends State<HomeNew> {
                         child: Column(
                           children: [
                             FeaturedHeading(
-                                title: "Featured", screenSize: screenSize),
+                                title: "Cities", screenSize: screenSize),
                             FeaturedTiles(screenSize: screenSize)
                           ],
                         ),
@@ -54,7 +65,7 @@ class _HomeNewState extends State<HomeNew> {
                   )
                 ],
               ),
-              FeaturedHeading(title: "Rating", screenSize: screenSize),
+              FeaturedHeading(title: "Featured", screenSize: screenSize),
               AutoSlider(),
               BottomBar(),
             ],

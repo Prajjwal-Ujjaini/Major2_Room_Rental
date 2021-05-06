@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/views/center_view.dart';
-import 'package:major2_room_rental/widgets/navigation_bar/navigation_bar.dart';
+import 'package:major2_room_rental/widgets/navigation_bar.dart';
 
 class HomeView extends StatelessWidget {
   @override

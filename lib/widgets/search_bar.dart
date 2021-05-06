@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/components/search_bar/gf_search_bar.dart';
+import 'package:major2_room_rental/Constants/image_url.dart';
+import 'package:major2_room_rental/views/city_rooms_list.dart';
 
 class SearchBar extends StatefulWidget {
   @override
@@ -7,8 +9,6 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  List list = ["Select City For Room", "Bhopal", "Indor", "Pune", "Mumbai"];
-
   // String _selectedItemText = "Your Selected City";
 
   @override
@@ -24,7 +24,7 @@ class _SearchBarState extends State<SearchBar> {
           // ),
           // SizedBox(height: 20),
           GFSearchBar(
-            searchList: list,
+            searchList: citiesName,
             searchQueryBuilder: (query, list) {
               return list
                   .where((item) =>
@@ -43,6 +43,10 @@ class _SearchBarState extends State<SearchBar> {
             onItemSelected: (item) {
               setState(() {
                 // _selectedItemText = item;
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => CityRoomsList(
+                          cityString: item,
+                        )));
               });
             },
             overlaySearchListHeight: 40,

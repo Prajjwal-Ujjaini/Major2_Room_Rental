@@ -193,7 +193,7 @@ class _SignUpDailogState extends State<SignUpDailog> {
         return GestureDetector(
           onTap: () {
             print("Signing in process start ");
-            onSubmit(model.authenticate);
+            onSubmit(model.addUsersInfo);
           },
           child: Container(
             height: 50.0,
@@ -206,7 +206,7 @@ class _SignUpDailogState extends State<SignUpDailog> {
     );
   }
 
-  Future<void> onSubmit(Function authenticate) async {
+  Future<void> onSubmit(Function addUsersInfo) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
@@ -220,7 +220,7 @@ class _SignUpDailogState extends State<SignUpDailog> {
 
       showLoadingIndicatorMsg(context, "Signing uppp");
 
-      await registerWithEmailPassword(_email, _password)
+      await registerWithEmailPassword(_email, _password, addUsersInfo, userInfo)
           .then((final response) async {
         // print("new response == $response");
         // print("hope this work ");

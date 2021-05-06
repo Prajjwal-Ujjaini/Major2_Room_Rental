@@ -168,7 +168,7 @@ class _LoginDailogState extends State<LoginDailog> {
         return GestureDetector(
           onTap: () {
             // showLoadingIndicatorMsg(context, "Signining In ...");
-            onSubmit(model.authenticate);
+            onSubmit(model.getUserInfo);
           },
           child: ButtonName(btnText: "Sign In"),
         );
@@ -176,13 +176,14 @@ class _LoginDailogState extends State<LoginDailog> {
     );
   }
 
-  Future<void> onSubmit(Function authenticate) async {
+  Future<void> onSubmit(Function getUserInfo) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       showLoadingIndicatorMsg(context, "Signing In ....");
 
-      await signInWithEmailPassword(_email, _password).then((final response) {
+      await signInWithEmailPassword(_email, _password, getUserInfo)
+          .then((final response) {
         if (response != null) {
           Navigator.of(context).pop();
 
