@@ -191,6 +191,7 @@ class _AddRoomsState extends State<AddRooms> {
               hint == chkDistanceFromMarket
           ? TextInputType.number
           : TextInputType.text,
+      // ignore: missing_return
       validator: (String value) {
         if (value.isEmpty && hint == chkRoomName) {
           return "the Room Name is required";

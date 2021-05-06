@@ -3,7 +3,6 @@ import 'package:major2_room_rental/Constants/current_state.dart';
 import 'package:major2_room_rental/Constants/style.dart';
 import 'package:major2_room_rental/views/about_page.dart';
 import 'package:major2_room_rental/views/admin/add_rooms.dart';
-import 'package:major2_room_rental/views/admin/admin_page.dart';
 import 'package:major2_room_rental/views/home_new.dart';
 import 'package:major2_room_rental/views/profile_page.dart';
 import 'package:major2_room_rental/widgets/auth_dailog.dart';

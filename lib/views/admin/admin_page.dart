@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/decorations.dart';
 import 'package:major2_room_rental/views/admin/add_rooms.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
-import 'package:major2_room_rental/widgets/centered_view.dart';
 import 'package:major2_room_rental/widgets/navigation_bar.dart';
 
 class AdminPage extends StatefulWidget {

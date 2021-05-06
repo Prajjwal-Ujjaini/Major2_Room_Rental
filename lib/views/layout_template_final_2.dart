@@ -22,7 +22,6 @@ class _LayoutTemplateFinal2State extends State<LayoutTemplateFinal2> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
