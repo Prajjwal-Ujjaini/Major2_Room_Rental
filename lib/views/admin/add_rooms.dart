@@ -145,8 +145,8 @@ class _AddRoomsState extends State<AddRooms> {
                                   },
                                   child: ButtonName(
                                       btnText: widget.roomModel != null
-                                          ? "Update Food Item"
-                                          : "Add Food Item"),
+                                          ? "Update Room "
+                                          : "Add Room"),
                                 );
                               },
                             ),
