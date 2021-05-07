@@ -135,18 +135,8 @@ class _AddRoomsState extends State<AddRooms> {
                                 return GestureDetector(
                                   onTap: () {
                                     onSubmit(model.addRoom, model.updateRoom);
-                                    // if (model.isLoading) {
-                                    //   showLoadingIndicatorMsg(
-                                    //       context,
-                                    //       widget.roomModel != null
-                                    //           ? "Upadting food ...."
-                                    //           : "Adding Food Item...");
-                                    // }
                                   },
-                                  child: ButtonName(
-                                      btnText: widget.roomModel != null
-                                          ? "Update Room "
-                                          : "Add Room"),
+                                  child: ButtonName(btnText: "Add Room"),
                                 );
                               },
                             ),
