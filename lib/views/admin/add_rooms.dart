@@ -5,6 +5,7 @@ import 'package:major2_room_rental/Constants/image_url.dart';
 import 'package:major2_room_rental/models/room_model.dart';
 import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
+import 'package:major2_room_rental/scoped_model/new%20models/authentication2.dart';
 import 'package:major2_room_rental/views/home_new.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/button_with_name.dart';
@@ -88,6 +89,7 @@ class _AddRoomsState extends State<AddRooms> {
 
                               setState(() {
                                 checkAuthSignedInkey = false;
+                                checkUserTypeAdmin = false;
                               });
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(

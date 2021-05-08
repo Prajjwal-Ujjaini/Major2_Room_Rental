@@ -75,7 +75,7 @@ class Room extends Model {
           await http.get(Uri.parse("$AppUrlMajor/rooms.json"));
 
       final Map<String, dynamic> fetchedData = json.decode(response.body);
-      print(fetchedData);
+      // print(fetchedData);
 
       final List<RoomModel> roomItems = [];
 

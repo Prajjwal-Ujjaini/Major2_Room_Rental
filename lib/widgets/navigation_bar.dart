@@ -47,26 +47,37 @@ class _NavigationBarState extends State<NavigationBar> {
               GestureDetector(
                 onTap: () {
                   if (checkAuthSignedInkey) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => ProfilePage()));
+                    if (checkUserTypeAdmin) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => AddRooms()));
+                    } else {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (BuildContext context) => ProfilePage()));
+                    }
                   } else {
                     AuthDialog(context);
                   }
                 },
-                child: Text(checkAuthSignedInkey ? "Profile" : "SignUp",
-                    style: navBarItemTextStyle),
+                child: Text(
+                  checkAuthSignedInkey
+                      ? checkUserTypeAdmin
+                          ? "Admin Profile"
+                          : "Profile"
+                      : "SignUp",
+                  style: navBarItemTextStyle,
+                ),
               ),
               SizedBox(width: 60),
               NavBarItem(
                 title: 'About',
                 navigatorPath: AboutPage(),
               ),
-              SizedBox(width: 60),
-              NavBarItem(
-                title: 'Admin',
-                navigatorPath: AddRooms(),
-              ),
               SizedBox(width: 30),
+              // NavBarItem(
+              //   title: 'Admin',
+              //   navigatorPath: AddRooms(),
+              // ),
+              // SizedBox(width: 30),
             ],
           )
         ],

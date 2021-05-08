@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/image_url.dart';
+import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
 import 'package:major2_room_rental/views/auto_slider.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
@@ -23,7 +24,9 @@ class _HomeNewState extends State<HomeNew> {
   @override
   void initState() {
     super.initState();
+    // print("user id in home ka andar == $firebaseAuthId");
     // widget.model.fetchAll();
+    // widget.model.signUpWithEmailPasswordWithApi(email, password, userInfo)
   }
 
   @override

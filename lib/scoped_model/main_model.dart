@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 class MainModel extends Model with UserScopedModdel, Room {
   void fetchAll() {
     fetchRooms();
-    fetchUserInfo();
+
+    // fetchUserInfo();
   }
 }

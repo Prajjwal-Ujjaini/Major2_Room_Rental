@@ -28,3 +28,6 @@ List<Widget> itemsData = [
 ];
 
 bool checkAuthSignedInkey = false;
+bool checkUserTypeAdmin = false;
+bool checkRegristerAsAdmin = false;
+bool checkLoginAsAdmin = false;

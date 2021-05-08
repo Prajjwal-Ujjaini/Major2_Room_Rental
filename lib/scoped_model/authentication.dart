@@ -1,26 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:major2_room_rental/Constants/current_state.dart';
+import 'package:major2_room_rental/models/new%20models/user_detail_model_2.dart';
 import 'package:major2_room_rental/models/user_detail_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
+
 // UserDetailModel fireBaseAuthUser;
 
 String uid;
+String firebaseAuthId;
 String name;
 String userEmail;
 String imageUrl;
 
-UserDetailModel authencatedUserInfo;
+UserDetailModel2 authencatedUserInfo;
 
 // For checking if the user is already signed into the
 /// app using Google Sign In
-Future getUser() async {
+Future getUser(Function getUserInfoWithUid) async {
   await Firebase.initializeApp();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool authSignedIn = prefs.getBool('auth') ?? false;
+
   checkAuthSignedInkey = authSignedIn;
 
   // print("authSignedIn==$authSignedIn");
@@ -29,18 +33,38 @@ Future getUser() async {
 
   if (authSignedIn == true) {
     if (user != null) {
-      uid = user.uid;
+      uid = user.uid; //prefs.getString('uid');
+      firebaseAuthId = user.uid;
       name = user.displayName;
       userEmail = user.email;
       imageUrl = user.photoURL;
+
+      await getUserInfoWithUid(uid).then((final response) {
+        authencatedUserInfo = UserDetailModel2(
+          uid: response['uid'],
+          firebaseAuthId: response['firebaseAuthId'],
+          token: response['token'],
+          username: response['username'],
+          email: response['email'],
+          phoneNumber: response['phoneNumber'],
+          userType: response['userType'],
+        );
+
+        if (response['userType'] == 'Admin') {
+          checkUserTypeAdmin = true;
+        } else {
+          checkUserTypeAdmin = false;
+        }
+      });
     }
   } else {
     await prefs.setBool('auth', false);
+    await prefs.setString("uid", "0000");
   }
 }
 
 Future<User> registerWithEmailPassword(String email, String password,
-    Function addUsersInfo, Map<String, dynamic> userInfo) async {
+    Function addUsersInfoToDataBase, Map<String, dynamic> userInfo) async {
   await Firebase.initializeApp();
   User user;
 
@@ -50,27 +74,38 @@ Future<User> registerWithEmailPassword(String email, String password,
       password: password,
     );
 
-    // print(
-    //     "\n\nprint 1 in regrister with email  \n\n userCredential  === $userCredential  \n\n");
-    // print(
-    //     "\n\n\n  userCredential.user == ${userCredential.user}  \n\n userCredential.additionalUserInfo == ${userCredential.additionalUserInfo} \n\nclr");
-
-    // print(
-    //     "\n\n\n userCredential.hashCode == ${userCredential.hashCode}    \n\n  userCredential.credential == ${userCredential.credential}   \n\n  userCredential.runtimeType ==  ${userCredential.runtimeType} \n\n");
-
     user = userCredential.user;
 
     if (user != null) {
       uid = user.uid;
+      firebaseAuthId = user.uid;
       userEmail = user.email;
 
-      userInfo["firebaseId"] = uid;
+      userInfo["uid"] = user.uid;
+      userInfo["firebaseAuthId"] = user.uid;
+      userInfo['token'] = user.refreshToken;
 
-      addUsersInfo(userInfo);
-      print("Add user fundation chala ");
+      await addUsersInfoToDataBase(userInfo, uid).then((final response) {
+        // if (response['Future<bool>']) {
+        //   print("Add user fundation chala sucessfully ");
+        //   uid = response['uid'];
+        //   print("uid final updated haaaaaaa ===    uid==$uid");
+        // } else {
+        //   print("Add user fundation ni chala ");
+        //   uid = response['uid'];
+        // }
+
+        if (response) {
+          print("\nAdd user  to database fundation chala sucessfully ");
+          print("\nuid final updated haaaaaaa ===    uid==$uid");
+        } else {
+          print("\nAdd user to database fundation ni chala ");
+        }
+      });
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('auth', true);
+      await prefs.setString('uid', uid);
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
@@ -79,17 +114,14 @@ Future<User> registerWithEmailPassword(String email, String password,
       print('The account already exists for that email.');
     }
   } catch (e) {
-    print(e);
+    print("\nerror in try function on authentication.dart == $e");
   }
 
   return user;
 }
 
 Future<User> signInWithEmailPassword(
-  String email,
-  String password,
-  Function getUserInfo,
-) async {
+    String email, String password, Function getUserInfoWithUid) async {
   await Firebase.initializeApp();
   User user;
 
@@ -98,16 +130,30 @@ Future<User> signInWithEmailPassword(
       email: email,
       password: password,
     );
+
     user = userCredential.user;
 
     if (user != null) {
       uid = user.uid;
+      firebaseAuthId = user.uid;
       userEmail = user.email;
 
-      authencatedUserInfo = await getUserInfo(userEmail);
+      Map<String, dynamic> userInfo = await getUserInfoWithUid(uid);
+
+      authencatedUserInfo = UserDetailModel2(
+          uid: userInfo['uid'],
+          firebaseAuthId: userInfo['firebaseAuthId'],
+          token: userInfo['token'],
+          username: userInfo['username'],
+          email: userInfo['email'],
+          phoneNumber: userInfo['phoneNumber'],
+          userType: userInfo['userType']);
+
+      // ToDo : Apply conditions when getuserInfoWithUid function gives null in retuen
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('auth', true);
+      await prefs.setString('uid', uid);
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
@@ -125,10 +171,13 @@ Future<String> signOut() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('auth', false);
+  prefs.setString("uid", "0000");
 
   checkAuthSignedInkey = false;
+  checkUserTypeAdmin = false;
 
   uid = null;
+  firebaseAuthId = null;
   userEmail = null;
 
   return 'User signed out';

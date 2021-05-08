@@ -1,7 +1,7 @@
 class UserModel {
-  final String id;
-  final String token;
-  final String email;
+  String uid;
+  String token;
+  String email;
 
-  UserModel({this.id, this.token, this.email});
+  UserModel({this.uid, this.token, this.email});
 }

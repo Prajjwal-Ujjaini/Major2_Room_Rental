@@ -19,11 +19,15 @@ class _MyAppState extends State<MyApp> {
   MainModel mainModel = MainModel();
 
   Future getUserInfo() async {
-    await getUser();
+    await getUser(mainModel.getUserInfoWithUid);
     setState(() {});
-    print("started init \n\n uid== $uid \n\n email== $userEmail");
+    print(
+        "started init \n\n uid== $uid  \n\n firebaseAuthId== $firebaseAuthId \n\n email== $userEmail");
 
-    print(" main page pr authSignedInkey  == $checkAuthSignedInkey");
+    print(
+        " main page pr authSignedInkey  == $checkAuthSignedInkey    and  \n\n checkUserTypeAdmin===$checkUserTypeAdmin");
+
+    // ToDo :   login page ma data receive karn ha aur check karwan ha
   }
 
   @override

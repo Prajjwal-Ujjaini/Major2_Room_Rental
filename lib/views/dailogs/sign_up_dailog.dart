@@ -65,40 +65,30 @@ class _SignUpDailogState extends State<SignUpDailog> {
                   ),
                 ),
                 SizedBox(
-                  height: 30.0,
+                  height: 10.0,
                 ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Regrister as Admin ",
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      Switch(
+                        value: checkRegristerAsAdmin,
+                        onChanged: (bool value) {
+                          setState(() {
+                            checkRegristerAsAdmin = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
                 _buildSignUpButton(),
-                // Divider(
-                //   height: 20.0,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     Text(
-                //       "Already have an account?",
-                //       style: TextStyle(
-                //           color: Color(0xFFBDC2CB),
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 18.0),
-                //     ),
-                //     SizedBox(
-                //       width: 10.0,
-                //     ),
-                //     GestureDetector(
-                //       onTap: () {
-                //         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //             builder: (context) => LoginDailog()));
-                //       },
-                //       child: Text(
-                //         "Sign in",
-                //         style: TextStyle(
-                //             color: Colors.blueAccent,
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 18.0),
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -193,7 +183,7 @@ class _SignUpDailogState extends State<SignUpDailog> {
         return GestureDetector(
           onTap: () {
             print("Signing in process start ");
-            onSubmit(model.addUsersInfo);
+            onSubmit(model.addUsersInfoToDataBase);
           },
           child: Container(
             height: 50.0,
@@ -206,72 +196,35 @@ class _SignUpDailogState extends State<SignUpDailog> {
     );
   }
 
-  Future<void> onSubmit(Function addUsersInfo) async {
+  Future<void> onSubmit(Function addUsersInfoToDataBase) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       Map<String, dynamic> userInfo = {
         "email": _email,
         "username": _username,
-        "userType": "customer",
+        "userType": checkRegristerAsAdmin ? "Admin" : "Customer",
       };
 
       print("user info auth fun ka phela $userInfo");
 
       showLoadingIndicatorMsg(context, "Signing uppp");
 
-      await registerWithEmailPassword(_email, _password, addUsersInfo, userInfo)
+      await registerWithEmailPassword(
+              _email, _password, addUsersInfoToDataBase, userInfo)
           .then((final response) async {
-        // print("new response == $response");
-        // print("hope this work ");
-
         if (response != null) {
           Navigator.of(context).pop();
+
           setState(() {
             checkAuthSignedInkey = true;
+            checkUserTypeAdmin = checkRegristerAsAdmin ? true : false;
           });
 
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (BuildContext context) => HomeNew()));
           // print(response);
         }
-
-// authenticate(_email, _password,
-//               authMode: AuthMode.SignUp, userInfo: userInfo)
-//         .then((final response) async {
-
-//         Navigator.of(context).pop();
-
-//         if (!response['hasError']) {
-//           Navigator.of(context).pop();
-
-//           Navigator.of(context).pop();
-
-//           // setState(() {
-//           //   currentTab = 0;
-//           //   currentPage = pages[0];
-//           // });
-
-//           // Navigator.of(context).pushReplacement(
-//           //     MaterialPageRoute(builder: (BuildContext context) => HomeView()));
-
-//           // Navigator.of(context).pushReplacementNamed("/mainscreen");
-
-//           // locator<NavigationService>().goBack();
-
-//           print("Sucess login hua ha ");
-//           // locator<NavigationService>().navigateTo(HomeRoute);
-//           // locator<NavigationService>().goBack();
-//         } else {
-//           Navigator.of(context).pop();
-//           _scaffoldKey.currentState.showSnackBar(
-//             SnackBar(
-//               duration: Duration(seconds: 2),
-//               backgroundColor: Colors.red,
-//               content: Text(response['message']),
-//             ),
-//           );
-//         }
       }).catchError((error) {
         print('Registration Error: $error');
         Navigator.of(context).pop();

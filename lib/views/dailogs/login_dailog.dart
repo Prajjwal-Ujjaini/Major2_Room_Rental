@@ -61,41 +61,29 @@ class _LoginDailogState extends State<LoginDailog> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 20.0,
+                SizedBox(height: 20.0),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Login as Admin ",
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      Switch(
+                        value: checkLoginAsAdmin,
+                        onChanged: (bool value) {
+                          setState(() {
+                            checkLoginAsAdmin = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+                SizedBox(height: 10),
                 _buildSignInButton(),
-                // Divider(
-                //   height: 20.0,
-                // ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: <Widget>[
-                //     Text(
-                //       "Don't have an account?",
-                //       style: TextStyle(
-                //           color: Color(0xFFBDC2CB),
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 18.0),
-                //     ),
-                //     SizedBox(
-                //       width: 10.0,
-                //     ),
-                //     GestureDetector(
-                //       onTap: () {
-                //         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //             builder: (BuildContext context) => SignUpDailog()));
-                //       },
-                //       child: Text(
-                //         "Sign up",
-                //         style: TextStyle(
-                //             color: Colors.blueAccent,
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 18.0),
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
@@ -168,7 +156,7 @@ class _LoginDailogState extends State<LoginDailog> {
         return GestureDetector(
           onTap: () {
             // showLoadingIndicatorMsg(context, "Signining In ...");
-            onSubmit(model.getUserInfo);
+            onSubmit(model.getUserInfoWithUid);
           },
           child: ButtonName(btnText: "Sign In"),
         );
@@ -176,19 +164,20 @@ class _LoginDailogState extends State<LoginDailog> {
     );
   }
 
-  Future<void> onSubmit(Function getUserInfo) async {
+  Future<void> onSubmit(Function getUserInfoWithUid) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       showLoadingIndicatorMsg(context, "Signing In ....");
 
-      await signInWithEmailPassword(_email, _password, getUserInfo)
+      await signInWithEmailPassword(_email, _password, getUserInfoWithUid)
           .then((final response) {
         if (response != null) {
           Navigator.of(context).pop();
 
           setState(() {
             checkAuthSignedInkey = true;
+            checkUserTypeAdmin = checkLoginAsAdmin ? true : false;
           });
 
           Navigator.of(context).pushReplacement(
@@ -196,14 +185,14 @@ class _LoginDailogState extends State<LoginDailog> {
           // print(response);
         }
       }).catchError((error) {
-        print('Registration Error: $error');
+        print('Login Error: $error');
         Navigator.of(context).pop();
         // ignore: deprecated_member_use
         _scaffoldKey.currentState.showSnackBar(
           SnackBar(
             duration: Duration(seconds: 2),
             backgroundColor: Colors.red,
-            content: Text('Registration Error: $error'),
+            content: Text('Login Error: $error'),
           ),
         );
       });
