@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:firebase/firebase.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_db_web_unofficial/DatabaseSnapshot.dart';
 import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:major2_room_rental/Constants/constants.dart';

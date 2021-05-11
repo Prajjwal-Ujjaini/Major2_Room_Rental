@@ -2,14 +2,10 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/style.dart';
-import 'package:major2_room_rental/Constants/temporary_data.dart';
-import 'package:major2_room_rental/models/category_model.dart';
 import 'package:major2_room_rental/models/room_model.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/navigation_bar.dart';
-import 'package:major2_room_rental/widgets/show_alert_ok_box.dart';
-import 'package:major2_room_rental/widgets/show_loading_indicator_msg.dart';
 import 'package:major2_room_rental/widgets/single_city_rooms_list_tiles_2.dart';
 import 'package:scoped_model/scoped_model.dart';
 
