@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
-import 'package:flutter/foundation.dart';
 import 'package:major2_room_rental/Constants/constants.dart';
 import 'package:major2_room_rental/models/user_detail_model.dart';
 import 'package:major2_room_rental/models/user_model.dart';

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/decorations.dart';
 import 'package:major2_room_rental/Constants/image_url.dart';
+import 'package:major2_room_rental/models/room_model.dart';
 
 class SingleCityRoomsListTiles2 extends StatelessWidget {
   final String imageUrl, placeName, roomdesc;
+  final RoomModel room;
 
   const SingleCityRoomsListTiles2(
-      {Key key, this.imageUrl, this.placeName, this.roomdesc})
+      {Key key, this.imageUrl, this.placeName, this.roomdesc, this.room})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class SingleCityRoomsListTiles2 extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "Ghar ka naam aayega  $placeName",
+                    "House Name/No. :  ${room.roomName}",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
@@ -37,15 +39,23 @@ class SingleCityRoomsListTiles2 extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "Adress denge $roomdesc",
+                          "Adress : ${room.address}",
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                         Text(
-                          "phone number",
+                          "pin : ${room.mno}",
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                         Text(
-                          "owner rating",
+                          "phone no. : ${room.mno}",
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        ),
+                        Text(
+                          "Rent: ${room.mno}",
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        ),
+                        Text(
+                          "Distance From Market: ${room.mno} km",
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                       ],
@@ -57,9 +67,7 @@ class SingleCityRoomsListTiles2 extends StatelessWidget {
             Container(
               width: 300,
               height: 310,
-              child: Image.network(
-                homeImageUrl,
-              ),
+              child: Image.network(room.imagePath),
             )
           ],
         ),

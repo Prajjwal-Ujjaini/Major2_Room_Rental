@@ -8,13 +8,16 @@ import 'package:major2_room_rental/models/room_model.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/navigation_bar.dart';
+import 'package:major2_room_rental/widgets/show_alert_ok_box.dart';
+import 'package:major2_room_rental/widgets/show_loading_indicator_msg.dart';
 import 'package:major2_room_rental/widgets/single_city_rooms_list_tiles_2.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class CityRoomsList extends StatefulWidget {
+  final MainModel model;
   final String cityString;
 
-  const CityRoomsList({Key key, this.cityString}) : super(key: key);
+  const CityRoomsList({Key key, this.cityString, this.model}) : super(key: key);
 
   @override
   _CityRoomsListState createState() => _CityRoomsListState();
@@ -22,12 +25,24 @@ class CityRoomsList extends StatefulWidget {
 
 class _CityRoomsListState extends State<CityRoomsList> {
   // ignore: deprecated_member_use
-  List<CategoryModel> cityRoomList = new List<CategoryModel>();
+  // List<CategoryModel> cityRoomList = new List<CategoryModel>();
+
+  Future getData() async {
+    // var response =
+    // await widget.model.getCityRooms(widget.cityString.toLowerCase());
+
+    // if (response == null) {
+    //   showAlertOkBox(
+    //       context, "No Data Available for the City ${widget.cityString}");
+    // }
+  }
 
   @override
   void initState() {
     super.initState();
-    cityRoomList = getCategories();
+    // cityRoomList = getCategories();
+    print("\ncity == ${widget.cityString.toLowerCase()}");
+    getData();
   }
 
   @override
@@ -97,9 +112,10 @@ class _CityRoomsListState extends State<CityRoomsList> {
         padding: EdgeInsets.symmetric(horizontal: 70),
         margin: EdgeInsets.only(bottom: 20.0),
         child: SingleCityRoomsListTiles2(
-          imageUrl: room.imagePath,
-          placeName: room.roomName,
-          roomdesc: room.address,
+          // imageUrl: room.imagePath,
+          // placeName: room.roomName,
+          // roomdesc: room.address,
+          room: room,
         ),
       ),
     );

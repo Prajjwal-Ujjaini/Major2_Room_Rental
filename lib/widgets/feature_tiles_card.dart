@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:major2_room_rental/scoped_model/main_model.dart';
 import 'package:major2_room_rental/views/city_rooms_list.dart';
 
 class FeatureTileCard extends StatelessWidget {
+  final MainModel model;
   final Size screenSize;
   final imageUrl, categoryName;
 
-  const FeatureTileCard(this.screenSize, {this.imageUrl, this.categoryName});
+  const FeatureTileCard(this.screenSize,
+      {this.imageUrl, this.categoryName, this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +18,7 @@ class FeatureTileCard extends StatelessWidget {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => CityRoomsList(
                   cityString: categoryName,
+                  model: model,
                 )));
       },
       child: Container(

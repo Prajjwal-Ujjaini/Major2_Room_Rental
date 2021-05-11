@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/views/dailogs/login_dailog.dart';
 import 'package:major2_room_rental/views/dailogs/sign_up_dailog.dart';
-import 'package:major2_room_rental/views/dailogs/sign_up_dailog_2.dart';
 
 class AuthDailog2 extends StatefulWidget {
   AuthDailog2({Key key}) : super(key: key);

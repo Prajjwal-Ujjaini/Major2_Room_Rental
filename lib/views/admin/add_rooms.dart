@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/current_state.dart';
 import 'package:major2_room_rental/Constants/decorations.dart';
@@ -5,13 +7,13 @@ import 'package:major2_room_rental/Constants/image_url.dart';
 import 'package:major2_room_rental/models/room_model.dart';
 import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
-import 'package:major2_room_rental/scoped_model/new%20models/authentication2.dart';
 import 'package:major2_room_rental/views/home_new.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/button_with_name.dart';
 import 'package:major2_room_rental/widgets/centered_view.dart';
 import 'package:major2_room_rental/widgets/featured_heading.dart';
 import 'package:major2_room_rental/widgets/navigation_bar.dart';
+import 'package:major2_room_rental/widgets/show_alert_ok_box.dart';
 import 'package:major2_room_rental/widgets/small_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -25,6 +27,15 @@ class AddRooms extends StatefulWidget {
 }
 
 class _AddRoomsState extends State<AddRooms> {
+  var random;
+  int tmpImageIndex;
+  @override
+  void initState() {
+    super.initState();
+    random = new Random();
+    tmpImageIndex = random.nextInt(imageUrlListAll.length);
+  }
+
   String roomName;
   String mno;
   String city;
@@ -117,7 +128,8 @@ class _AddRoomsState extends State<AddRooms> {
                               height: 170.0,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: NetworkImage(homeImageUrl),
+                                  image: NetworkImage(
+                                      imageUrlListAll[tmpImageIndex]),
                                   fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(10.0),
@@ -159,22 +171,22 @@ class _AddRoomsState extends State<AddRooms> {
 
   Widget _builderTextFormField(String hint, {int maxLine = 1}) {
     return TextFormField(
-      initialValue: widget.roomModel != null && hint == chkRoomName
-          ? widget.roomModel.roomName
-          : widget.roomModel != null && hint == chkMno
-              ? widget.roomModel.mno
-              : widget.roomModel != null && hint == chkCity
-                  ? widget.roomModel.city
-                  : widget.roomModel != null && hint == chkPin
-                      ? widget.roomModel.pin
-                      : widget.roomModel != null && hint == chkAddress
-                          ? widget.roomModel.address
-                          : widget.roomModel != null && hint == chkRent
-                              ? widget.roomModel.rent
-                              : widget.roomModel != null &&
-                                      hint == chkDistanceFromMarket
-                                  ? widget.roomModel.distanceFromMarket
-                                  : hint,
+      // initialValue: widget.roomModel != null && hint == chkRoomName
+      //     ? widget.roomModel.roomName
+      //     : widget.roomModel != null && hint == chkMno
+      //         ? widget.roomModel.mno
+      //         : widget.roomModel != null && hint == chkCity
+      //             ? widget.roomModel.city
+      //             : widget.roomModel != null && hint == chkPin
+      //                 ? widget.roomModel.pin
+      //                 : widget.roomModel != null && hint == chkAddress
+      //                     ? widget.roomModel.address
+      //                     : widget.roomModel != null && hint == chkRent
+      //                         ? widget.roomModel.rent
+      //                         : widget.roomModel != null &&
+      //                                 hint == chkDistanceFromMarket
+      //                             ? widget.roomModel.distanceFromMarket
+      //                             : hint,
       decoration: InputDecoration(hintText: "$hint"),
       maxLines: maxLine,
       keyboardType: hint == chkMno ||
@@ -239,19 +251,19 @@ class _AddRoomsState extends State<AddRooms> {
       _foodItemFormKey.currentState.save();
 
       if (widget.roomModel != null) {
-        Map<String, dynamic> updatedFoodItem = {
+        Map<String, dynamic> updatedRoomItem = {
           "roomName": roomName,
           "mno": mno,
           "city": city,
           "pin": pin,
           "address": address,
-          "imag": imagePath,
+          "imagePath": imagePath,
           "rent": rent,
-          "dist": distanceFromMarket,
+          "distance": distanceFromMarket,
         };
 
         final bool response =
-            await updateRoom(updatedFoodItem, widget.roomModel.id);
+            await updateRoom(updatedRoomItem, widget.roomModel.id);
 
         if (response) {
           // Navigator.of(context).pop(); //to remove the alert dialog
@@ -274,13 +286,17 @@ class _AddRoomsState extends State<AddRooms> {
           _scaffoldStateKey.currentState.showSnackBar(snackBar);
         }
       } else if (widget.roomModel == null) {
+        print("""
+\n\n imageUrlListAll length==${imageUrlListAll.length}   and  cities name all length == ${citiesNameAll.length} 
+\n\nrmndom no == ${random.nextInt(imageUrlListAll.length)}  \n\n\n\n int == ${tmpImageIndex}""");
+
         final RoomModel room = RoomModel(
           roomName: roomName,
           mno: mno,
           city: city,
           pin: pin,
           address: address,
-          imagePath: imagePath,
+          imagePath: imageUrlListAll[tmpImageIndex],
           rent: rent,
           distanceFromMarket: distanceFromMarket,
         );
@@ -288,13 +304,23 @@ class _AddRoomsState extends State<AddRooms> {
         bool value = await addRoom(room);
         if (value) {
           // Navigator.of(context).pop();
+          showAlertOkBox(context, "Room Sucessfully added");
+
+          Future.delayed(Duration(seconds: 1), () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => AddRooms()));
+          });
+
           SnackBar snackBar = SnackBar(
             content: Text("Room Sucessfully added"),
           );
-          // ignore: deprecated_member_use
-          _scaffoldStateKey.currentState.showSnackBar(snackBar);
+
+          // _scaffoldStateKey.currentState.showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         } else if (!value) {
           // Navigator.of(context).pop();
+
+          showAlertOkBox(context, "Failed to add room ");
           SnackBar snackBar = SnackBar(
             content: Text("Failed to add room "),
           );

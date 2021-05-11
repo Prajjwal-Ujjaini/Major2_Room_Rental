@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/temporary_data.dart';
 import 'package:major2_room_rental/models/category_model.dart';
+import 'package:major2_room_rental/scoped_model/main_model.dart';
 import 'package:major2_room_rental/widgets/feature_tiles_card.dart';
 
 class FeaturedTiles extends StatefulWidget {
+  final MainModel model;
   final Size screenSize;
 
-  FeaturedTiles({Key key, this.screenSize}) : super(key: key);
+  FeaturedTiles({Key key, this.screenSize, this.model}) : super(key: key);
 
   @override
   _FeaturedTilesState createState() => _FeaturedTilesState();
@@ -40,6 +42,7 @@ class _FeaturedTilesState extends State<FeaturedTiles> {
               itemBuilder: (context, index) {
                 return FeatureTileCard(
                   widget.screenSize,
+                  model: widget.model,
                   imageUrl: cities[index].imageUrl,
                   categoryName: cities[index].categoryName,
                 );

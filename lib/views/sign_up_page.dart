@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/decorations.dart';
 import 'package:major2_room_rental/views/dailogs/sign_up_dailog.dart';
-import 'package:major2_room_rental/views/dailogs/sign_up_dailog_2.dart';
 import 'package:major2_room_rental/widgets/navigation_bar.dart';
 
 class SignUpPage extends StatefulWidget {

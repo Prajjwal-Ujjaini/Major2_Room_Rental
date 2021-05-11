@@ -4,7 +4,6 @@ import 'package:major2_room_rental/Constants/decorations.dart';
 import 'package:major2_room_rental/Constants/image_url.dart';
 import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
-import 'package:major2_room_rental/scoped_model/new%20models/authentication2.dart';
 import 'package:major2_room_rental/views/home_new.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/centered_view.dart';

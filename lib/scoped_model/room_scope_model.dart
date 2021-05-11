@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'package:firebase/firebase.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_db_web_unofficial/DatabaseSnapshot.dart';
+import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:major2_room_rental/Constants/constants.dart';
 import 'package:major2_room_rental/models/room_model.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -6,6 +10,8 @@ import 'package:http/http.dart' as http;
 
 class Room extends Model {
   List<RoomModel> _rooms = [];
+  List<RoomModel> _cityRooms = [];
+
   bool _isLoading = false;
 
   bool get isLoading {
@@ -20,6 +26,14 @@ class Room extends Model {
     return _rooms.length;
   }
 
+  List<RoomModel> get cityRooms {
+    return List.from(_cityRooms);
+  }
+
+  int get cityRoomLength {
+    return _cityRooms.length;
+  }
+
   Future<bool> addRoom(RoomModel roomModel) async {
     _isLoading = true;
     notifyListeners();
@@ -28,10 +42,10 @@ class Room extends Model {
       final Map<String, dynamic> roomData = {
         "roomName": roomModel.roomName,
         "mno": roomModel.mno,
-        "city": roomModel.city,
+        "city": roomModel.city.toLowerCase(),
         "pin": roomModel.pin,
         "address": roomModel.address,
-        "imag": roomModel.imagePath,
+        "imagePath": roomModel.imagePath,
         "rent": roomModel.rent,
         "dist": roomModel.distanceFromMarket,
       };
@@ -173,5 +187,69 @@ class Room extends Model {
       }
     }
     return room;
+  }
+
+  RoomModel getRoomByCity(String city) {
+    RoomModel room;
+    for (int i = 0; i < _rooms.length; i++) {
+      if (_rooms[i].city == city) {
+        room = _rooms[i];
+      }
+    }
+    return room;
+  }
+
+  Future<bool> getCityRooms(String city) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final List<RoomModel> roomItems = [];
+
+      for (int i = 0; i < _rooms.length; i++) {
+        RoomModel tmpRoom = getRoomByCity(city);
+        roomItems.add(tmpRoom);
+      }
+
+      _cityRooms = roomItems;
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(true);
+    } catch (error) {
+      print("The erreo ==$error");
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(false);
+    }
+  }
+
+  final databaseRef = FirebaseDatabaseWeb.instance.reference().child("rooms");
+
+  Future<bool> getCityRoomsFirebase(String city) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final List<RoomModel> roomItems = [];
+
+      print("\n ff city == $city");
+
+      DatabaseSnapshot snap = await databaseRef.once();
+
+      print("\n\n data from firebsase == ${snap.value}");
+
+      // for (int i = 0; i < _rooms.length; i++) {
+      //   RoomModel tmpRoom = getRoomByCity(city);
+      //   roomItems.add(tmpRoom);
+      // }
+
+      _cityRooms = roomItems;
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(true);
+    } catch (error) {
+      print("The erreo ==$error");
+      _isLoading = false;
+      notifyListeners();
+      return Future.value(false);
+    }
   }
 }
