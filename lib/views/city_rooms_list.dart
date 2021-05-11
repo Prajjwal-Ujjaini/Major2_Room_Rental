@@ -1,5 +1,4 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/style.dart';
 import 'package:major2_room_rental/models/room_model.dart';
