@@ -43,7 +43,7 @@ class Room extends Model {
         "address": roomModel.address,
         "imagePath": roomModel.imagePath,
         "rent": roomModel.rent,
-        "dist": roomModel.distanceFromMarket,
+        "distanceFromMarket": roomModel.distanceFromMarket,
       };
 
       final http.Response response = await http.post(

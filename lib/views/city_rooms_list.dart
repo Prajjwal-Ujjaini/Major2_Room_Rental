@@ -20,31 +20,31 @@ class CityRoomsList extends StatefulWidget {
 
 class _CityRoomsListState extends State<CityRoomsList> {
   // ignore: deprecated_member_use
-  List<RoomModel> cityRoomList = new List<RoomModel>();
+  // List<RoomModel> cityRoomList = new List<RoomModel>();
   // List<CategoryModel> cityRoomList = new List<CategoryModel>();
 
-  Future getData() async {
-    await widget.model.getCityRooms(widget.cityString.toLowerCase());
+  // Future getData() async {
+  //   await widget.model.getCityRooms(widget.cityString.toLowerCase());
 
-    // setState(() async {
-    //   cityRoomList =
-    //       await getCityRoomsFirebase(widget.cityString.toLowerCase());
-    // });
+  //   // setState(() async {
+  //   //   cityRoomList =
+  //   //       await getCityRoomsFirebase(widget.cityString.toLowerCase());
+  //   // });
 
-    print(
-        "\n  _city length ==${widget.model.cityRoomLength}      \n\n Chal ja yrr city room list === ${cityRoomList.length}   \n\n  ${cityRoomList}");
+  //   print(
+  //       "\n  _city length ==${widget.model.cityRoomLength}      \n\n Chal ja yrr city room list === ${cityRoomList.length}   \n\n  ${cityRoomList}");
 
-    // if (cityRoomList == null ) {
-    //   showAlertOkBox(
-    //       context, "No Data Available for the City ${widget.cityString}");
-    // }
-  }
+  //   // if (cityRoomList == null ) {
+  //   //   showAlertOkBox(
+  //   //       context, "No Data Available for the City ${widget.cityString}");
+  //   // }
+  // }
 
   @override
   void initState() {
     super.initState();
     print("\ncity name 1 time page == ${widget.cityString.toLowerCase()}");
-    getData();
+    // getData();
   }
 
   @override

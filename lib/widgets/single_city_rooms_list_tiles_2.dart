@@ -50,6 +50,10 @@ class _SingleCityRoomsListTiles2State extends State<SingleCityRoomsListTiles2> {
                     child: Column(
                       children: [
                         Text(
+                          "City : ${widget.room.city}",
+                          style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        ),
+                        Text(
                           "Adress : ${widget.room.address}",
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
@@ -58,7 +62,7 @@ class _SingleCityRoomsListTiles2State extends State<SingleCityRoomsListTiles2> {
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                         Text(
-                          "phone no. : ${widget.room.mno}",
+                          "Owners phone no. : ${widget.room.mno}",
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                         Text(

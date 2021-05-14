@@ -7,6 +7,7 @@ import 'package:major2_room_rental/Constants/image_url.dart';
 import 'package:major2_room_rental/models/room_model.dart';
 import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
+import 'package:major2_room_rental/views/admin/admin_page.dart';
 import 'package:major2_room_rental/views/home_new.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/button_with_name.dart';
@@ -309,7 +310,7 @@ class _AddRoomsState extends State<AddRooms> {
 
           Future.delayed(Duration(seconds: 1), () {
             Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => AddRooms()));
+                builder: (BuildContext context) => AdminPage()));
           });
 
           SnackBar snackBar = SnackBar(
