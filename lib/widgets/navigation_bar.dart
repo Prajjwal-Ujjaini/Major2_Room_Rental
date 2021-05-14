@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/current_state.dart';
 import 'package:major2_room_rental/Constants/style.dart';
 import 'package:major2_room_rental/views/about_page.dart';
-import 'package:major2_room_rental/views/admin/add_rooms.dart';
+import 'package:major2_room_rental/views/admin/admin_page.dart';
 import 'package:major2_room_rental/views/home_new.dart';
-import 'package:major2_room_rental/views/profile_page.dart';
 import 'package:major2_room_rental/widgets/auth_dailog.dart';
 import 'package:major2_room_rental/widgets/navbar_item.dart';
 
@@ -39,21 +38,19 @@ class _NavigationBarState extends State<NavigationBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              NavBarItem(
-                title: 'Home',
-                navigatorPath: HomeNew(),
-              ),
+              NavBarItem(title: 'Home', navigatorPath: HomeNew()),
               SizedBox(width: 60),
               GestureDetector(
                 onTap: () {
                   if (checkAuthSignedInkey) {
                     if (checkUserTypeAdmin) {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => AddRooms()));
-                    } else {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (BuildContext context) => ProfilePage()));
+                          builder: (BuildContext context) => AdminPage()));
                     }
+                    //  else {
+                    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    //       builder: (BuildContext context) => ProfilePage()));
+                    // }
                   } else {
                     AuthDialog(context);
                   }
@@ -61,17 +58,14 @@ class _NavigationBarState extends State<NavigationBar> {
                 child: Text(
                   checkAuthSignedInkey
                       ? checkUserTypeAdmin
-                          ? "Admin Profile"
+                          ? "DashBoard"
                           : "Profile"
-                      : "SignUp",
+                      : "Admin SignUp",
                   style: navBarItemTextStyle,
                 ),
               ),
               SizedBox(width: 60),
-              NavBarItem(
-                title: 'About',
-                navigatorPath: AboutPage(),
-              ),
+              NavBarItem(title: 'About', navigatorPath: AboutPage()),
               SizedBox(width: 30),
               // NavBarItem(
               //   title: 'Admin',

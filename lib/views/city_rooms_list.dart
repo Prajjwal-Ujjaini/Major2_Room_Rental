@@ -20,13 +20,21 @@ class CityRoomsList extends StatefulWidget {
 
 class _CityRoomsListState extends State<CityRoomsList> {
   // ignore: deprecated_member_use
+  List<RoomModel> cityRoomList = new List<RoomModel>();
   // List<CategoryModel> cityRoomList = new List<CategoryModel>();
 
   Future getData() async {
-    // var response =
-    // await widget.model.getCityRooms(widget.cityString.toLowerCase());
+    await widget.model.getCityRooms(widget.cityString.toLowerCase());
 
-    // if (response == null) {
+    // setState(() async {
+    //   cityRoomList =
+    //       await getCityRoomsFirebase(widget.cityString.toLowerCase());
+    // });
+
+    print(
+        "\n  _city length ==${widget.model.cityRoomLength}      \n\n Chal ja yrr city room list === ${cityRoomList.length}   \n\n  ${cityRoomList}");
+
+    // if (cityRoomList == null ) {
     //   showAlertOkBox(
     //       context, "No Data Available for the City ${widget.cityString}");
     // }
@@ -35,8 +43,7 @@ class _CityRoomsListState extends State<CityRoomsList> {
   @override
   void initState() {
     super.initState();
-    // cityRoomList = getCategories();
-    print("\ncity == ${widget.cityString.toLowerCase()}");
+    print("\ncity name 1 time page == ${widget.cityString.toLowerCase()}");
     getData();
   }
 
@@ -59,6 +66,14 @@ class _CityRoomsListState extends State<CityRoomsList> {
               Divider(
                 height: 20,
               ),
+              // GestureDetector(
+              //   onTap: () {
+              //     // getData();
+              //   },
+              //   child: Text(
+              //       "size  of model.cityRooms ===${widget.model.cityRooms.length}    \n size of tmproomItems =={}"),
+              // ),
+
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: ScopedModelDescendant<MainModel>(builder:
@@ -82,9 +97,10 @@ class _CityRoomsListState extends State<CityRoomsList> {
               //         itemCount: cityRoomList.length,
               //         itemBuilder: (context, index) {
               //           return SingleCityRoomsListTiles2(
-              //             imageUrl: cityRoomList[index].imageUrl,
-              //             placeName: cityRoomList[index].categoryName,
-              //             roomdesc: cityRoomList[index].categoryName,
+              //             // room: cityRoomList,
+              //             imageUrl: cityRoomList[index].imagePath,
+              //             placeName: cityRoomList[index].roomName,
+              //             roomdesc: cityRoomList[index].address,
               //           );
               //         },
               //       ),

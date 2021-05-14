@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:major2_room_rental/Constants/image_url.dart';
 import 'package:major2_room_rental/models/category_model.dart';
+import 'package:major2_room_rental/models/room_model.dart';
+import 'package:http/http.dart' as http;
 
 List<CategoryModel> getCategories() {
   // ignore: deprecated_member_use
@@ -56,4 +59,62 @@ List<CategoryModel> getCategories() {
   categoryList.add(categoryModel);
 
   return categoryList;
+}
+
+// // final databaseRef = FirebaseDatabaseWeb.instance.reference().child("rooms");
+
+// ignore: deprecated_member_use
+final List<RoomModel> tmproomItems = new List<RoomModel>();
+
+Future<List<RoomModel>> getCityRoomsFirebase(String city) async {
+  // ignore: deprecated_member_use
+  final List<RoomModel> roomItems = new List<RoomModel>();
+  // _isLoading = true;
+  // notifyListeners();
+  try {
+    print("\n ff city == $city");
+
+    // DatabaseSnapshot snap = await databaseRef.once();
+    // print("\n\n data from firebsase == ${snap.value}");
+
+    final http.Response response = await http.get(Uri.parse(
+        "https://major2roomrentall-default-rtdb.firebaseio.com/rooms.json?orderBy=%22city%22&equalTo=%22${city}%22&print=pretty"));
+
+    final Map<String, dynamic> fetchedData = json.decode(response.body);
+    print("\nfetchedData form rest api == \n\n ${fetchedData}");
+
+    fetchedData.forEach((String id, dynamic roomData) {
+      RoomModel roomItem = RoomModel(
+        id: id,
+        roomName: roomData["roomName"],
+        mno: roomData["mno"],
+        city: roomData["city"],
+        pin: roomData["pin"],
+        address: roomData["address"],
+        imagePath: roomData["imagePath"],
+        rent: roomData["rent"],
+        distanceFromMarket: roomData["distanceFromMarket"],
+      );
+
+      print("\n\n try print room data ==   ${roomItem.roomName} \n\n ");
+      roomItems.add(roomItem);
+      tmproomItems.add(roomItem);
+    });
+
+    // for (int i = 0; i < _rooms.length; i++) {
+    //   RoomModel tmpRoom = getRoomByCity(city);
+    //   roomItems.add(tmpRoom);
+    // }
+
+    // _cityRooms = roomItems;
+    // _isLoading = false;
+    // notifyListeners();
+    print("size of in tmpdata tmproomItems===${tmproomItems.length}");
+    return Future.value(roomItems);
+  } catch (error) {
+    print("The erreo ==$error");
+    // _isLoading = false;
+    // notifyListeners();
+    return Future.value(null);
+  }
 }

@@ -1,12 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:major2_room_rental/Constants/current_state.dart';
 import 'package:major2_room_rental/Constants/decorations.dart';
 import 'package:major2_room_rental/Constants/image_url.dart';
 import 'package:major2_room_rental/scoped_model/authentication.dart';
 import 'package:major2_room_rental/scoped_model/main_model.dart';
+import 'package:major2_room_rental/views/admin/add_rooms.dart';
 import 'package:major2_room_rental/views/home_new.dart';
 import 'package:major2_room_rental/widgets/bottom_bar.dart';
 import 'package:major2_room_rental/widgets/centered_view.dart';
+import 'package:major2_room_rental/widgets/custom_button.dart';
 import 'package:major2_room_rental/widgets/custom_list_tile.dart';
 import 'package:major2_room_rental/widgets/navigation_bar.dart';
 import 'package:major2_room_rental/widgets/small_button.dart';
@@ -18,6 +22,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  var random;
+  int tmpImageIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    random = new Random();
+    tmpImageIndex = random.nextInt(imageUrlListAll.length);
+  }
+
   bool turnOnNotification = false;
   bool turnOnLocation = false;
   @override
@@ -62,7 +76,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.black38),
                                 ],
                                 image: DecorationImage(
-                                  image: NetworkImage(userProfilePic),
+                                  image: NetworkImage(
+                                      imageUrlListAll[tmpImageIndex]),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -73,19 +88,36 @@ class _ProfilePageState extends State<ProfilePage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  "Your User Name",
-                                  style: TextStyle(fontSize: 16.0),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "UserName : ",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      "${authencatedUserInfo.username}",
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                Text(
-                                  "${userEmail}",
-                                  style: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.grey,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "User Email: ",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      "${authencatedUserInfo.email}",
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 10.0,
@@ -118,6 +150,40 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 30.0,
                         ),
                         Text(
+                          "General",
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Card(
+                          elevation: 3.0,
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              children: <Widget>[
+                                CustomButton(
+                                  icon: Icons.add_business,
+                                  text: "Add Rooms",
+                                  path: AddRooms(),
+                                ),
+                                // Divider(
+                                //   height: 10.0,
+                                //   color: Colors.grey,
+                                // ),
+                                // CustomButton(
+                                //   icon: Icons.account_box,
+                                //   text: "Update Profile",
+                                // ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        Text(
                           "Account Information",
                           style: TextStyle(
                               fontSize: 20.0, fontWeight: FontWeight.bold),
@@ -131,25 +197,27 @@ class _ProfilePageState extends State<ProfilePage> {
                             padding: EdgeInsets.all(16.0),
                             child: Column(
                               children: <Widget>[
-                                CustomListTile(
-                                  icon: Icons.phone_android,
-                                  text: "Contact Number : XXX000XXX1",
-                                ),
-                                Divider(
-                                  height: 10.0,
-                                  color: Colors.grey,
-                                ),
-                                CustomListTile(
-                                  icon: Icons.person,
-                                  text: "Gender: .....",
-                                ),
-                                Divider(
-                                  height: 10.0,
-                                  color: Colors.grey,
-                                ),
+                                // CustomListTile(
+                                //   icon: Icons.phone_android,
+                                //   text:
+                                //       "Contact Number : ${authencatedUserInfo.phoneNumber != null ? authencatedUserInfo.phoneNumber : "Please Update your Phone No."}",
+                                // ),
+                                // Divider(
+                                //   height: 10.0,
+                                //   color: Colors.grey,
+                                // ),
+                                // CustomListTile(
+                                //   icon: Icons.person,
+                                //   text: "Gender: ${authencatedUserInfo.p != null ? authencatedUserInfo.phoneNumber : "Please Update your Phone No."}",
+                                // ),
+                                // Divider(
+                                //   height: 10.0,
+                                //   color: Colors.grey,
+                                // ),
                                 CustomListTile(
                                   icon: Icons.account_box,
-                                  text: "Type : General",
+                                  text:
+                                      "Account Type : ${authencatedUserInfo.userType}",
                                 ),
                               ],
                             ),

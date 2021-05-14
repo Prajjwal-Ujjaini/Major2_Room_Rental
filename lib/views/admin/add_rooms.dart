@@ -29,6 +29,7 @@ class AddRooms extends StatefulWidget {
 class _AddRoomsState extends State<AddRooms> {
   var random;
   int tmpImageIndex;
+
   @override
   void initState() {
     super.initState();

@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:firebase_db_web_unofficial/DatabaseSnapshot.dart';
-import 'package:firebase_db_web_unofficial/firebasedbwebunofficial.dart';
 import 'package:major2_room_rental/Constants/constants.dart';
 import 'package:major2_room_rental/models/room_model.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -187,28 +185,57 @@ class Room extends Model {
     return room;
   }
 
-  RoomModel getRoomByCity(String city) {
-    RoomModel room;
-    for (int i = 0; i < _rooms.length; i++) {
-      if (_rooms[i].city == city) {
-        room = _rooms[i];
-      }
-    }
-    return room;
-  }
+//   RoomModel getRoomByCity(String city) {
+//     RoomModel room;
+//     for (int i = 0; i < _rooms.length; i++) {
+//       if (_rooms[i].city == city) {
+//         print(
+//             "\n room== \n name == ${_rooms[i].roomName} \t city == ${_rooms[i].city}\taddress == ${_rooms[i].address} \t  distance == ${_rooms[i].distanceFromMarket}");
+//         room = _rooms[i];
+
+//         print(""" \nafter room=_room[i]
+// \n room ===  \n
+//  name == ${room.roomName} \t city == ${room.city}\t
+//  address == ${room.address} \t  pin== ${room.pin} distance == ${room.distanceFromMarket}""");
+//       }
+//     }
+
+//     return room;
+//   }
 
   Future<bool> getCityRooms(String city) async {
+    print("\n starting of getCityRooms function   \t city name ==$city \n");
+    _cityRooms.clear();
+
     _isLoading = true;
     notifyListeners();
     try {
-      final List<RoomModel> roomItems = [];
+      List<RoomModel> roomItems = [];
 
       for (int i = 0; i < _rooms.length; i++) {
-        RoomModel tmpRoom = getRoomByCity(city);
-        roomItems.add(tmpRoom);
+        print(
+            "\ncondition _rooms[i].city == city  == ${_rooms[i].city == city}");
+        if (_rooms[i].city == city) {
+          print(
+              "\n room== \t name == ${_rooms[i].roomName} \t city == ${_rooms[i].city}\taddress == ${_rooms[i].address} ");
+
+          RoomModel room = _rooms[i];
+
+          print(
+              " \nafter room=_room[i] \n room ===  \t  name == ${room.roomName} \t city == ${room.city}\t  address == ${room.address} ");
+
+          roomItems.add(room);
+          print("\n\n roomItems length == ${roomItems}");
+        } else {
+          print("\n Condition Fails \n");
+          print("\n\n roomItems length == ${roomItems}");
+        }
       }
 
       _cityRooms = roomItems;
+
+      print(
+          "\n\n at the end \t _cityRooms length ==${_cityRooms.length}\n  _cityRoom ===${_cityRooms}\n\n");
       _isLoading = false;
       notifyListeners();
       return Future.value(true);
@@ -220,34 +247,34 @@ class Room extends Model {
     }
   }
 
-  final databaseRef = FirebaseDatabaseWeb.instance.reference().child("rooms");
+  // Future<bool> fetchRoomsAllCities() async {
+  //   _isLoading = true;
+  //   notifyListeners();
+  //   try {
+  //     for (int i = 0; i < citiesName.length; i++) {
+  //       List<RoomModel> roomItems = [];
 
-  Future<bool> getCityRoomsFirebase(String city) async {
-    _isLoading = true;
-    notifyListeners();
-    try {
-      final List<RoomModel> roomItems = [];
+  //       for (int j = 0; j < _rooms.length; j++) {
+  //         if (citiesName[i] == _rooms[j].city) {
+  //           RoomModel room = _rooms[i];
 
-      print("\n ff city == $city");
+  //           roomItems.add(room);
+  //         } else {
+  //           print("\n Condition Fails \n");
+  //         }
+  //       }
+  //     }
 
-      DatabaseSnapshot snap = await databaseRef.once();
+  //     _rooms = roomItems;
 
-      print("\n\n data from firebsase == ${snap.value}");
-
-      // for (int i = 0; i < _rooms.length; i++) {
-      //   RoomModel tmpRoom = getRoomByCity(city);
-      //   roomItems.add(tmpRoom);
-      // }
-
-      _cityRooms = roomItems;
-      _isLoading = false;
-      notifyListeners();
-      return Future.value(true);
-    } catch (error) {
-      print("The erreo ==$error");
-      _isLoading = false;
-      notifyListeners();
-      return Future.value(false);
-    }
-  }
+  //     _isLoading = false;
+  //     notifyListeners();
+  //     return Future.value(true);
+  //   } catch (error) {
+  //     print("The erreo ==$error");
+  //     _isLoading = false;
+  //     notifyListeners();
+  //     return Future.value(false);
+  //   }
+  // }
 }
